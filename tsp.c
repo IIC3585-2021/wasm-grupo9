@@ -91,12 +91,7 @@ void takeInput(uint32_t** matrix)
 	}
 }
  
-
-
-
-
-
-EMSCRIPTEN_KEEPALIVE void mincost(int city, uint32_t** matrix, uint32_t* path, int index)
+void mincost(int city, uint32_t** matrix, uint32_t* path, int index)
 {
 	int i;
 	int ncity;
