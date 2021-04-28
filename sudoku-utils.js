@@ -50,6 +50,11 @@ const sendMatrix = (myModule, matrix) => {
   return matrixMemory
 }
 
+const sendPath = (myModule) => {
+  let path = myModule._calloc(N, 4);
+  return path;
+}
+
 // const getArrayFromPtr = (myModule, ptr) => {
 //   let resultMatrix = matrix(9, 9);
 //   for (let i = 0; i < N; i++) {
@@ -63,15 +68,13 @@ const sendMatrix = (myModule, matrix) => {
 
 
 // Get the result from the "C script"
-const getMatrix = (myModule, matrixMemory) => {
-  let resultMatrix = matrix(10, 10);
-  for (let i = 0; i < N; i++) {
-    let rowsPtr = myModule.getValue(matrixMemory + i * 4, "i32");
+// completar función
+const getPath = (myModule, pathMemory) => {
+  let resultPath = Array(10);
     for (let j = 0; j < N; j++) {
-      resultMatrix[i][j] =  myModule.getValue(rowsPtr + j * 4, "i32");
+      resultPath[j] =  myModule.getValue(pathMemory + j * 4, "i32");
     }
-  }
-  return resultMatrix;
+  return resultPath;
 }
 
 const resetBtn = document.getElementById("reset-btn");
@@ -82,13 +85,18 @@ resetBtn.onclick = () => {
 Module().then(function (mymod) {
   let solveBtn = document.getElementById("solve-btn");
   solveBtn.onclick = () => {
-    let arrPtr = makePtrOfArray(mymod);
+    //let arrPtr = makePtrOfArray(mymod);
+    let matrix; // Obtener matriz de costos desde html
+    let memoryMatrix = sendMatrix(mymod, matrix);
+    let memoryPath = sendPath(mymod);
     let startDate = window.performance.now();
-    let solverResult = mymod._SolveSudoku(arrPtr);
+    let distance = mymod._mincost(0, memoryMatrix, memoryPath, 0);
+    //let solverResult = mymod._SolveSudoku(arrPtr);
     let endDate = window.performance.now();
-    let resultMatrix = getArrayFromPtr(mymod, arrPtr);
-    setSudokuGrid(resultMatrix);
-    alert(`${solverResult ? 'Solved!': 'No results found'} Excecution time: ${(endDate - startDate)} ms`);
+    let resultPath = getPath(mymod, memoryPath);
+    // Ahora hay que reflejar los cambios en html
+    //setSudokuGrid(resultMatrix);
+    alert(`La distancia minima es: ${distance} Excecution time: ${(endDate - startDate)} ms`);
   }
 })
 

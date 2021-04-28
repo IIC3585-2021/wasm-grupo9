@@ -3,7 +3,7 @@
 #include<stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-//#include <emscripten.h>
+
  
 int ary[10][10];
 int completed[10];
@@ -93,7 +93,10 @@ void takeInput(uint32_t** matrix)
  
 
 
-void mincost(int city, uint32_t** matrix, uint32_t* path, int index)
+
+
+
+EMSCRIPTEN_KEEPALIVE void mincost(int city, uint32_t** matrix, uint32_t* path, int index)
 {
 	int i;
 	int ncity;
@@ -118,7 +121,7 @@ void mincost(int city, uint32_t** matrix, uint32_t* path, int index)
  
 	mincost(ncity, matrix, path, index);
 }
- 
+
 
  
 int main()
