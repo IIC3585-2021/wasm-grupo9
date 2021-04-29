@@ -2,7 +2,6 @@ import Module from "./main.js"
 import {createNodes, createLabels, giveStyle, renderGraph, states, g, showPath} from "./graph.js"
 const N = 2
 
-//const matrix = (rows, cols) => new Array(cols).fill(0).map((o, i) => new Array(rows).fill(0))
 
 const getMatrixValues = () => {
   let nCities = $(".cells-input").length / 2;
@@ -63,19 +62,14 @@ const getPath = (myModule, pathMemory) => {
   return resultPath;
 }
 
-// const resetBtn = document.getElementById("reset-btn");
-// resetBtn.onclick = () => {
-//   resetSudokuGrid();
-// }
+
 
 Module().then(function (mymod) {
-  // let solveBtn = document.getElementById("solve-btn");
-  // solveBtn.onclick = () => {
-    //let arrPtr = makePtrOfArray(mymod);
+
     let buildInputBtn = document.getElementById("calc-btn")
     buildInputBtn.onclick = () => {
-    let nCities = $("#fib-n").val();
-    setMatrixInput(Number(nCities));
+      let nCities = $("#fib-n").val();
+      setMatrixInput(Number(nCities));
     }
 
     let calcBtn = document.getElementById("calc-tsp")
@@ -90,18 +84,11 @@ Module().then(function (mymod) {
       let memoryPath = sendPath(mymod);
       let startDate = window.performance.now();
       let distance = mymod._mincost(0, memoryMatrix, memoryPath, 0);
-      //let solverResult = mymod._SolveSudoku(arrPtr);
       let endDate = window.performance.now();
       let resultPath = getPath(mymod, memoryPath);
-      let testPath = ["B", "A"];
+      let testPath = ["B", "A"]; // Hay que cambiarlo por el path verdadero
       showPath(testPath);
-      // Ahora hay que reflejar los cambios en html
-      //setSudokuGrid(resultMatrix);
       console.log(`La distancia minima es: ${distance} Excecution time: ${(endDate - startDate)} ms ${resultPath}`);
-        
     }
-
-    
-  // }
 })
 
