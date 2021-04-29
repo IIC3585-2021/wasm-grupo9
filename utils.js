@@ -1,5 +1,5 @@
 import Module from "./main.js"
-const N = 10
+const N = 2
 
 const matrix = (rows, cols) => new Array(cols).fill(0).map((o, i) => new Array(rows).fill(0))
 
@@ -77,16 +77,16 @@ const getPath = (myModule, pathMemory) => {
   return resultPath;
 }
 
-const resetBtn = document.getElementById("reset-btn");
-resetBtn.onclick = () => {
-  resetSudokuGrid();
-}
+// const resetBtn = document.getElementById("reset-btn");
+// resetBtn.onclick = () => {
+//   resetSudokuGrid();
+// }
 
 Module().then(function (mymod) {
-  let solveBtn = document.getElementById("solve-btn");
-  solveBtn.onclick = () => {
+  // let solveBtn = document.getElementById("solve-btn");
+  // solveBtn.onclick = () => {
     //let arrPtr = makePtrOfArray(mymod);
-    let matrix; // Obtener matriz de costos desde html
+    let matrix = [[1,2], [3,4]]; // Obtener matriz de costos desde html
     let memoryMatrix = sendMatrix(mymod, matrix);
     let memoryPath = sendPath(mymod);
     let startDate = window.performance.now();
@@ -96,7 +96,7 @@ Module().then(function (mymod) {
     let resultPath = getPath(mymod, memoryPath);
     // Ahora hay que reflejar los cambios en html
     //setSudokuGrid(resultMatrix);
-    alert(`La distancia minima es: ${distance} Excecution time: ${(endDate - startDate)} ms`);
-  }
+    console.log(`La distancia minima es: ${distance} Excecution time: ${(endDate - startDate)} ms ${resultPath}`);
+  // }
 })
 

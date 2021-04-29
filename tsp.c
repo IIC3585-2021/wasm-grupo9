@@ -91,7 +91,8 @@ void takeInput(uint32_t** matrix)
 	}
 }
  
-void mincost(int city, uint32_t** matrix, uint32_t* path, int index)
+
+int mincost(int city, uint32_t** matrix, uint32_t* path, int index)
 {
 	int i;
 	int ncity;
@@ -111,10 +112,10 @@ void mincost(int city, uint32_t** matrix, uint32_t* path, int index)
 		index++;
 		cost += matrix[city][ncity];
  
-		return;
+		return cost;
 	}
  
-	mincost(ncity, matrix, path, index);
+	return mincost(ncity, matrix, path, index);
 }
 
 
