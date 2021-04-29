@@ -20,33 +20,29 @@ const createNodes = (states, nStates) => {
 const createLabels = (matrix, g) => {
     matrix.forEach((row, rowIndex) => {
         row.forEach( (weight, colIndex) => {
-            g.setEdge(statesDict[rowIndex], statesDict[colIndex],     { label: `${weight}` });
+            weight != "" ? g.setEdge(statesDict[rowIndex], statesDict[colIndex],     { label: `${weight}` }): {};
         })
     })
 }
 
+// Generamos los nodos en el gráfico
+createNodes(states, 3);
 
+ // Esta debería venir del html!
+const matrix = [["", 2, 3], [2, "", 4], [3, 4, ""]];
 
-// Automatically label each of the nodes
-/* states.forEach(function(state) { g.setNode(state, { label: state }); }); */
+// Generamos los labels de las conexiones entre nodos en el gráfico
+createLabels(matrix, g);
 
-// Set up the edges
-/* g.setEdge("A",     "B",     { label: "12" });
-g.setEdge("B",     "C",     { label: "4" });
-g.setEdge("C",     "D",     { label: "5" });
-g.setEdge("D",     "E",     { label: "7" });
-g.setEdge("E",     "F",     { label: "1" });
- */
 
 // Set some general styles
 g.nodes().forEach(function(v) {
   var node = g.node(v);
   node.rx = node.ry = 5;
+  node.style = "fill: #7f7";
 });
 
-// Add some custom colors based on state
-/* g.node('A').style = "fill: #f77";
-g.node('B').style = "fill: #7f7"; */
+
 
 var svg = d3.select("svg"),
     inner = svg.select("g");
