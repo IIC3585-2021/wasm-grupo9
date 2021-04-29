@@ -1,14 +1,23 @@
 import Module from "./main.js"
+import {createNodes, createLabels, giveStyle, renderGraph, states, g} from "./graph.js"
 const N = 2
 
-const matrix = (rows, cols) => new Array(cols).fill(0).map((o, i) => new Array(rows).fill(0))
+//const matrix = (rows, cols) => new Array(cols).fill(0).map((o, i) => new Array(rows).fill(0))
 
-const getSudokuGrid = () => {
-  let sudokuMatrix = matrix(9, 9);
-  $('.form-control').each(function(i, obj) {
-    sudokuMatrix[obj.id.charAt(0)][obj.id.charAt(1)] = $(obj).val() == "" ? 0 : parseInt($(obj).val());
+const getMatrixValues = () => {
+  let nCities = $(".cells-input").length / 2;
+  /* let tspMatrix = []
+  for(let j = 0; j < nCities; j++){
+    tspMatrix[i] = new Array(nCities);
+  } */
+  let tspMatrix = new Array(nCities).fill(0).map( () => new Array(nCities).fill(0))
+  $('.cells-input').each((i, obj) => {
+    console.log(obj);
+    $(obj).val() != "" ? tspMatrix[Number(obj.id.charAt(5))][Number(obj.id.charAt(6))] = Number($(obj).val()) : {};
+    /* sudokuMatrix[obj.id.charAt(5)][obj.id.charAt(6)] = $(obj).val() == "" ? 0 : parseInt($(obj).val()); */
   });
-  return sudokuMatrix;
+  console.log(tspMatrix);
+  return tspMatrix;
 }
 
 const setSudokuGrid = (resultMatrix) => {
@@ -22,7 +31,7 @@ const setMatrixInput = (range) => {
   for (let row = 0; row < range; row++) {
     $("#matrix-input").append(`<div class="d-flex flex-row" id="row-${row}"></div>`);
     for (let col = 0; col < range; col++){
-      let inputText = `<input type="text" class="form-control mx-0 rounded-0 text-center" name="" id="cell-${row}${col}">`
+      let inputText = `<input type="text" class="form-control mx-0 rounded-0 text-center cells-input" name="" id="cell-${row}${col}">`
       let cellClass = "ratio ratio-1x1"
       row === 0 ? cellClass += " border-top" : {};
       col === 0 ? cellClass += " border-start" : {};
@@ -84,25 +93,34 @@ Module().then(function (mymod) {
   // let solveBtn = document.getElementById("solve-btn");
   // solveBtn.onclick = () => {
     //let arrPtr = makePtrOfArray(mymod);
-
-    let solveBtn = document.getElementById("calc-btn")
-  solveBtn.onclick = () => {
+    let buildInputBtn = document.getElementById("calc-btn")
+    buildInputBtn.onclick = () => {
     let nCities = $("#fib-n").val();
     setMatrixInput(Number(nCities));
-    console.log("saluditos");
-  }
-    //setMatrixInput(10);
-    let matrix = [[1,2], [3,4]]; // Obtener matriz de costos desde html
-    let memoryMatrix = sendMatrix(mymod, matrix);
-    let memoryPath = sendPath(mymod);
-    let startDate = window.performance.now();
-    let distance = mymod._mincost(0, memoryMatrix, memoryPath, 0);
-    //let solverResult = mymod._SolveSudoku(arrPtr);
-    let endDate = window.performance.now();
-    let resultPath = getPath(mymod, memoryPath);
-    // Ahora hay que reflejar los cambios en html
-    //setSudokuGrid(resultMatrix);
-    console.log(`La distancia minima es: ${distance} Excecution time: ${(endDate - startDate)} ms ${resultPath}`);
+    }
+
+    let calcBtn = document.getElementById("calc-tsp")
+    calcBtn.onclick = () => {
+      let matrix = getMatrixValues();
+      let nCities = $("#fib-n").val();
+      createNodes(states, nCities);
+      createLabels(matrix, g);
+      giveStyle();
+      renderGraph();
+      let memoryMatrix = sendMatrix(mymod, matrix);
+      let memoryPath = sendPath(mymod);
+      let startDate = window.performance.now();
+      let distance = mymod._mincost(0, memoryMatrix, memoryPath, 0);
+      //let solverResult = mymod._SolveSudoku(arrPtr);
+      let endDate = window.performance.now();
+      let resultPath = getPath(mymod, memoryPath);
+      // Ahora hay que reflejar los cambios en html
+      //setSudokuGrid(resultMatrix);
+      console.log(`La distancia minima es: ${distance} Excecution time: ${(endDate - startDate)} ms ${resultPath}`);
+        
+    }
+
+    
   // }
 })
 
