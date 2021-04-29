@@ -1,33 +1,42 @@
 // Create a new directed graph
-var g = new dagreD3.graphlib.Graph().setGraph({});
+const g = new dagreD3.graphlib.Graph().setGraph({});
 
 // States and transitions from RFC 793
-var states = ["A", "B", "C", "D",
+const states = ["A", "B", "C", "D",
               "E", "F", "G", "H",
-              "I", "J", "K"];
+              "I", "J", "K", "L",
+              "M", "N", "O", "P",
+              "Q", "R", "S", "T",
+              "U", "V", "W", "X",
+              "Y", "Z"];
+
+const statesDict = {}
+states.forEach((state, index) => { statesDict[index] = state });
+
+const createNodes = (states, nStates) => {
+    states.forEach( (state, index) => { index < nStates ? g.setNode(state, { label: state }): {} });
+}
+
+const createLabels = (matrix, g) => {
+    matrix.forEach((row, rowIndex) => {
+        row.forEach( (weight, colIndex) => {
+            g.setEdge(statesDict[rowIndex], statesDict[colIndex],     { label: `${weight}` });
+        })
+    })
+}
+
+
 
 // Automatically label each of the nodes
-states.forEach(function(state) { g.setNode(state, { label: state }); });
+/* states.forEach(function(state) { g.setNode(state, { label: state }); }); */
 
 // Set up the edges
-g.setEdge("A",     "B",     { label: "12" });
+/* g.setEdge("A",     "B",     { label: "12" });
 g.setEdge("B",     "C",     { label: "4" });
 g.setEdge("C",     "D",     { label: "5" });
 g.setEdge("D",     "E",     { label: "7" });
 g.setEdge("E",     "F",     { label: "1" });
-/* g.setEdge("SYN RCVD",   "ESTAB",      { label: "rcv ACK of SYN" });
-g.setEdge("SYN SENT",   "SYN RCVD",   { label: "rcv SYN" });
-g.setEdge("SYN SENT",   "ESTAB",      { label: "rcv SYN, ACK" });
-g.setEdge("SYN SENT",   "CLOSED",     { label: "close" });
-g.setEdge("ESTAB",      "FINWAIT-1",  { label: "close" });
-g.setEdge("ESTAB",      "CLOSE WAIT", { label: "rcv FIN" });
-g.setEdge("FINWAIT-1",  "FINWAIT-2",  { label: "rcv ACK of FIN" });
-g.setEdge("FINWAIT-1",  "CLOSING",    { label: "rcv FIN" });
-g.setEdge("CLOSE WAIT", "LAST-ACK",   { label: "close" });
-g.setEdge("FINWAIT-2",  "TIME WAIT",  { label: "rcv FIN" });
-g.setEdge("CLOSING",    "TIME WAIT",  { label: "rcv ACK of FIN" });
-g.setEdge("LAST-ACK",   "CLOSED",     { label: "rcv ACK of FIN" });
-g.setEdge("TIME WAIT",  "CLOSED",     { label: "timeout=2MSL" }); */
+ */
 
 // Set some general styles
 g.nodes().forEach(function(v) {
@@ -36,8 +45,8 @@ g.nodes().forEach(function(v) {
 });
 
 // Add some custom colors based on state
-g.node('A').style = "fill: #f77";
-g.node('B').style = "fill: #7f7";
+/* g.node('A').style = "fill: #f77";
+g.node('B').style = "fill: #7f7"; */
 
 var svg = d3.select("svg"),
     inner = svg.select("g");

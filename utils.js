@@ -17,6 +17,23 @@ const setSudokuGrid = (resultMatrix) => {
   })
 }
 
+const setMatrixInput = (range) => {
+  for (let row = 0; row < range; row++) {
+    $("#matrix-input").append(`<div class="d-flex flex-row" id="row-${row}"></div>`);
+    for (let col = 0; col < range; col++){
+      let inputText = `<input type="text" class="form-control mx-0 rounded-0 text-center" name="" id="cell-${row}${col}">`
+      let cellClass = "ratio ratio-1x1"
+      row === 0 ? cellClass += " border-top" : {};
+      col === 0 ? cellClass += " border-start" : {};
+      row === range - 1 ? cellClass += " border-bottom" : {};
+      col === range -1 ? cellClass += " border-end" : {};
+      row === 0 || col === 0 || row === range - 1 || col === range - 1 ? cellClass += " border-3 border-dark" : {};
+      let cellElement = `<div class="${cellClass}">${inputText}</div>`;
+      $(`#row-${row}`).append(cellElement);
+    }
+  }
+}
+
 const resetSudokuGrid = () => {
   $('.form-control').each(function(i, obj) {
     $(obj).val("");
@@ -86,6 +103,7 @@ Module().then(function (mymod) {
   // let solveBtn = document.getElementById("solve-btn");
   // solveBtn.onclick = () => {
     //let arrPtr = makePtrOfArray(mymod);
+    setMatrixInput(10);
     let matrix = [[1,2], [3,4]]; // Obtener matriz de costos desde html
     let memoryMatrix = sendMatrix(mymod, matrix);
     let memoryPath = sendPath(mymod);
