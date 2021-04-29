@@ -38,10 +38,23 @@ export const createLabels = (matrix, g) => {
 // Set some general styles
 export const giveStyle = () => {
     g.nodes().forEach(function(v) {
-        var node = g.node(v);
+        let node = g.node(v);
+        console.log(v);
         node.rx = node.ry = 5;
-        node.style = "fill: #7f7";
+        /* node.style = "fill: #7f7"; */
       });
+}
+
+
+// Va coloreando con verde las ciudades en orden segun el resultado
+export const showPath = (citiesPath) => {
+    citiesPath.forEach((city, index) => {
+        setTimeout(() => {
+            let node = g.node(city);
+            node.style = "fill: #7f7";
+            renderGraph();
+        }, (index + 1) * 600)
+    })
 }
 
 

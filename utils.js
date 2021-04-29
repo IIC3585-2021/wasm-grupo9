@@ -1,30 +1,18 @@
 import Module from "./main.js"
-import {createNodes, createLabels, giveStyle, renderGraph, states, g} from "./graph.js"
+import {createNodes, createLabels, giveStyle, renderGraph, states, g, showPath} from "./graph.js"
 const N = 2
 
 //const matrix = (rows, cols) => new Array(cols).fill(0).map((o, i) => new Array(rows).fill(0))
 
 const getMatrixValues = () => {
   let nCities = $(".cells-input").length / 2;
-  /* let tspMatrix = []
-  for(let j = 0; j < nCities; j++){
-    tspMatrix[i] = new Array(nCities);
-  } */
   let tspMatrix = new Array(nCities).fill(0).map( () => new Array(nCities).fill(0))
   $('.cells-input').each((i, obj) => {
-    console.log(obj);
     $(obj).val() != "" ? tspMatrix[Number(obj.id.charAt(5))][Number(obj.id.charAt(6))] = Number($(obj).val()) : {};
-    /* sudokuMatrix[obj.id.charAt(5)][obj.id.charAt(6)] = $(obj).val() == "" ? 0 : parseInt($(obj).val()); */
   });
-  console.log(tspMatrix);
   return tspMatrix;
 }
 
-const setSudokuGrid = (resultMatrix) => {
-  $('.form-control').each(function(i, obj) {
-    $(obj).val(resultMatrix[obj.id.charAt(0)][obj.id.charAt(1)])
-  })
-}
 
 const setMatrixInput = (range) => {
   $("#matrix-input").empty();
@@ -42,15 +30,6 @@ const setMatrixInput = (range) => {
       $(`#row-${row}`).append(cellElement);
     }
   }
-}
-
-
-
-
-const resetSudokuGrid = () => {
-  $('.form-control').each(function(i, obj) {
-    $(obj).val("");
-  })
 }
 
 
@@ -114,6 +93,8 @@ Module().then(function (mymod) {
       //let solverResult = mymod._SolveSudoku(arrPtr);
       let endDate = window.performance.now();
       let resultPath = getPath(mymod, memoryPath);
+      let testPath = ["B", "A"];
+      showPath(testPath);
       // Ahora hay que reflejar los cambios en html
       //setSudokuGrid(resultMatrix);
       console.log(`La distancia minima es: ${distance} Excecution time: ${(endDate - startDate)} ms ${resultPath}`);
