@@ -1,9 +1,9 @@
-import Module from "./main.js";
+import Module from "./glue.js";
 import {createNodes, createLabels,
         giveStyle, renderGraph,
         states, g, showPath} from "./graph.js";
 
-
+  
 const getMatrixValues = () => {
   let nCities = $(".cells-input").length;
   console.log("ncities: ", nCities);
@@ -62,9 +62,9 @@ const sendPath = (myModule) => {
 const getPath = (myModule, pathMemory) => {
   let nCities = $(".cells-input").length;
   let resultPath = Array(nCities).fill(0);
-    for (let j = 0; j < nCities; j++) {
-      resultPath[j] =  myModule.getValue(pathMemory + j * 4, "i32");
-    }
+  for (let j = 0; j < nCities; j++) {
+    resultPath[j] =  myModule.getValue(pathMemory + j * 4, "i32");
+  }
   return resultPath;
 }
 
@@ -88,13 +88,14 @@ Module().then(function (mymod) {
       renderGraph();
       let memoryMatrix = sendMatrix(mymod, matrix);
       let memoryPath = sendPath(mymod);
+      // // const mincost = mymod.cwrap("mincost", null, ['number', 'number', 'number', 'number']);
       let startDate = window.performance.now();
-      let distance = mymod._mincost(0, memoryMatrix, memoryPath, 0);
+      mymod._mincost(0, memoryMatrix, memoryPath, 0);
       let endDate = window.performance.now();
       let resultPath = getPath(mymod, memoryPath);
       let testPath = ["B", "A"]; // Hay que cambiarlo por el path verdadero
       showPath(testPath);
-      console.log(`La distancia minima es: ${distance} Excecution time: ${(endDate - startDate)} ms ${resultPath}`);
+      console.log(`La distancia minima es: ${'a'} Excecution time: ${(endDate - startDate)} ms ${resultPath}`);
     }
 })
 
