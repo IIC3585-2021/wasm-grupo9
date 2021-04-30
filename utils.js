@@ -1,10 +1,12 @@
-import Module from "./main.js"
-import {createNodes, createLabels, giveStyle, renderGraph, states, g, showPath} from "./graph.js"
-const N = 2
+import Module from "./main.js";
+import {createNodes, createLabels,
+        giveStyle, renderGraph,
+        states, g, showPath} from "./graph.js";
 
 
 const getMatrixValues = () => {
-  let nCities = $(".cells-input").length / 2;
+  let nCities = $(".cells-input").length;
+  console.log("ncities: ", nCities);
   let tspMatrix = new Array(nCities).fill(0).map( () => new Array(nCities).fill(0))
   $('.cells-input').each((i, obj) => {
     $(obj).val() != "" ? tspMatrix[Number(obj.id.charAt(5))][Number(obj.id.charAt(6))] = Number($(obj).val()) : {};
@@ -18,8 +20,8 @@ const setMatrixInput = (range) => {
   for (let row = 0; row < range; row++) {
     $("#matrix-input").append(`<div class="d-flex flex-row" id="row-${row}"></div>`);
     for (let col = 0; col < range; col++){
-      let inputText = `<input type="text" class="form-control mx-0 rounded-0 text-center cells-input" name="" id="cell-${row}${col}">`
-      let cellClass = "ratio ratio-1x1"
+      let inputText = `<input type="text" class="form-control mx-0 rounded-0 text-center cells-input" name="" id="cell-${row}${col}">`;
+      let cellClass = "ratio ratio-1x1";
       row === 0 ? cellClass += " border-top" : {};
       col === 0 ? cellClass += " border-start" : {};
       row === range - 1 ? cellClass += " border-bottom" : {};
@@ -32,22 +34,25 @@ const setMatrixInput = (range) => {
 }
 
 
-
 // Send the matrix of cities to the "C script"
 const sendMatrix = (myModule, matrix) => {
-  const matrixMemory = myModule._calloc(N, 4);
-  for (let i = 0; i < N; i++) {
-    let row = myModule._calloc(N, 4);
+  let nCities = $(".cells-input").length;
+  const matrixMemory = myModule._calloc(nCities, 4);
+  for (let i = 0; i < nCities; i++) {
+    let row = myModule._calloc(nCities, 4);
     myModule.setValue(matrixMemory + i * 4, row, "i32");
-    for (let j = 0; j < N; j++) {
+    for (let j = 0; j < nCities; j++) {
       myModule.setValue(row + j * 4, matrix[i][j], "i32");
     }
   }
   return matrixMemory
 }
 
+
+// Pide memoria para el arreglo del camino mas corto
 const sendPath = (myModule) => {
-  let path = myModule._calloc(N, 4);
+  let nCities = $(".cells-input").length;
+  let path = myModule._calloc(nCities, 4);
   return path;
 }
 
@@ -55,15 +60,16 @@ const sendPath = (myModule) => {
 // Get the result from the "C script"
 // completar función
 const getPath = (myModule, pathMemory) => {
-  let resultPath = Array(10);
-    for (let j = 0; j < N; j++) {
+  let nCities = $(".cells-input").length;
+  let resultPath = Array(nCities).fill(0);
+    for (let j = 0; j < nCities; j++) {
       resultPath[j] =  myModule.getValue(pathMemory + j * 4, "i32");
     }
   return resultPath;
 }
 
 
-
+// Ejecución de programa principal
 Module().then(function (mymod) {
 
     let buildInputBtn = document.getElementById("calc-btn")
