@@ -92,32 +92,30 @@ void takeInput(uint32_t** matrix)
 }
  
 
-void mincost(int city, uint32_t** matrix, uint32_t* path, int index)
+int mincost(int city, uint32_t** matrix, uint32_t* path, int index)
 {
-	// ahora si cambia el path por ejemplo
-	path[0] = 5;
-	path[1] = 10;
-	path[4] = 40;
-	// int i;
-	// int ncity;
+	int i;
+	int ncity;
  
-	// completed[city] = 1;
+	completed[city] = 1;
  
-	// printf("%d--->", city + 1);
-	// path[index] = city + 1;
-	// index++;
-	// ncity = least(city, matrix);
+	printf("%d--->", city + 1);
+	path[index] = city + 1;
+	index++;
+	ncity = least(city, matrix);
  
-	// if(ncity == 999)
-	// {
-	// 	ncity = 0;
-	// 	printf("%d", ncity + 1);
-	// 	path[index] = ncity + 1;
-	// 	index++;
-	// 	cost += matrix[city][ncity];
- 	// }
+	if(ncity == 999)
+	{
+		ncity = 0;
+		printf("%d", ncity + 1);
+		path[index] = ncity + 1;
+		index++;
+		cost += matrix[city][ncity];
  
-	// mincost(ncity, matrix, path, index);
+		return cost;
+	}
+ 
+	return mincost(ncity, matrix, path, index);
 }
 
 
