@@ -6,9 +6,7 @@
 
  
 int ary[10][10];
-int completed[10];
 int n;
-int cost = 0;
 int N = 10;
 
 void fillMatrix(uint32_t** matrix)
@@ -33,7 +31,7 @@ uint32_t* getNewPath(){
 	return path;
 }
 
-int least(int c, uint32_t** matrix)
+int least(int c, uint32_t** matrix, uint32_t* completed, int* cost, int n)
 {
 	int i;
 	int nc=999;
@@ -52,7 +50,7 @@ int least(int c, uint32_t** matrix)
 	}
  
 	if(min != 999)
-		cost += kmin;
+		*cost += kmin;
 
 	return nc;
 }
@@ -60,7 +58,7 @@ int least(int c, uint32_t** matrix)
 
 
 // Función que toma el input del usuario e imprime la matriz
-void takeInput(uint32_t** matrix)
+void takeInput(uint32_t** matrix, uint32_t* completed)
 {
 	int i,j;
  
@@ -74,8 +72,7 @@ void takeInput(uint32_t** matrix)
 		printf("\nEnter Elements of Row: %d\n",i+1);
  
 		for( j=0;j < n;j++){
-			scanf("%d",&ary[i][j]);
-			matrix[i][j] = ary[i][j];
+			scanf("%d",&matrix[i][j]);
 		}
 		completed[i]=0;
 	}
@@ -87,12 +84,12 @@ void takeInput(uint32_t** matrix)
 		printf("\n");
  
 		for(j = 0; j < n; j++)
-			printf("\t%d", ary[i][j]);
+			printf("\t%d", matrix[i][j]);
 	}
 }
  
 
-int mincost(int city, uint32_t** matrix, uint32_t* path, int index)
+void mincost(int city, uint32_t** matrix, uint32_t* path, int index, uint32_t* completed, int* cost, int n)
 {
 	int i;
 	int ncity;
@@ -102,7 +99,7 @@ int mincost(int city, uint32_t** matrix, uint32_t* path, int index)
 	printf("%d--->", city + 1);
 	path[index] = city + 1;
 	index++;
-	ncity = least(city, matrix);
+	ncity = least(city, matrix, completed, cost, n);
  
 	if(ncity == 999)
 	{
@@ -110,12 +107,12 @@ int mincost(int city, uint32_t** matrix, uint32_t* path, int index)
 		printf("%d", ncity + 1);
 		path[index] = ncity + 1;
 		index++;
-		cost += matrix[city][ncity];
+		*cost += matrix[city][ncity];
  
-		return cost;
+		return;
 	}
  
-	return mincost(ncity, matrix, path, index);
+	mincost(ncity, matrix, path, index, completed, cost, n);
 }
 
 
@@ -124,10 +121,13 @@ int main()
 {
 	uint32_t** matrix = getNewMatrix();
 	uint32_t* path = getNewPath();
+	uint32_t* completed = getNewPath();
+	int cost = 0;
+	
 	fillMatrix(matrix);
-	takeInput(matrix);
+	takeInput(matrix, completed);
 	printf("\n\nThe Path is:\n");
-	mincost(0, matrix, path, 0); //passing 0 because starting vertex
+	mincost(0, matrix, path, 0, completed, &cost, 3); //passing 0 because starting vertex
  
 	printf("\n\nMinimum cost is %d\n ", cost);
 	// Imprimiendo el camino

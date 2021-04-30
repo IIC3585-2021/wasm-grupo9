@@ -88,14 +88,17 @@ Module().then(function (mymod) {
       renderGraph();
       let memoryMatrix = sendMatrix(mymod, matrix);
       let memoryPath = sendPath(mymod);
+      let memoryCompleted = sendPath(mymod);
+      let memoryCost = mymod._calloc(1, 4);
       // // const mincost = mymod.cwrap("mincost", null, ['number', 'number', 'number', 'number']);
       let startDate = window.performance.now();
-      mymod._mincost(0, memoryMatrix, memoryPath, 0);
+      mymod._mincost(0, memoryMatrix, memoryPath, 0, memoryCompleted, memoryCost, nCities);
       let endDate = window.performance.now();
       let resultPath = getPath(mymod, memoryPath);
       let testPath = ["B", "A"]; // Hay que cambiarlo por el path verdadero
+      let cost = mymod.getValue(memoryCost, "i32");
       showPath(testPath);
-      console.log(`La distancia minima es: ${'a'} Excecution time: ${(endDate - startDate)} ms ${resultPath}`);
+      console.log(`La distancia minima es: ${'a'} Excecution time: ${(endDate - startDate)} ms ${resultPath}, ${cost}`);
     }
 })
 
