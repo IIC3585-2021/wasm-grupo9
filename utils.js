@@ -58,7 +58,6 @@ const sendPath = (myModule) => {
 
 
 // Get the result from the "C script"
-// completar función
 const getPath = (myModule, pathMemory) => {
   let nCities = $(".cells-input").length;
   let resultPath = Array(nCities).fill(0);
@@ -68,6 +67,7 @@ const getPath = (myModule, pathMemory) => {
   return resultPath;
 }
 
+
 const addRowTable = (nCities, time) => {
   const table = document.getElementById("result-table");
   let row = table.insertRow(-1);
@@ -76,6 +76,7 @@ const addRowTable = (nCities, time) => {
   cell1.innerHTML = `${nCities}`;
   cell2.innerHTML = `${time} ms`;
 }
+
 
 // Ejecución de programa principal
 Module().then(function (mymod) {

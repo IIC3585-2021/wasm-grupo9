@@ -25,15 +25,6 @@ export const createLabels = (matrix, g) => {
     })
 }
 
-// Generamos los nodos en el gráfico
-
-
- // Esta debería venir del html!
-//const matrix = [["", 2, 3], [2, "", 4], [3, 4, ""]];
-
-// Generamos los labels de las conexiones entre nodos en el gráfico
-
-
 
 // Set some general styles
 export const giveStyle = () => {
@@ -58,7 +49,6 @@ export const showPath = (citiesPath) => {
         }, (index + 1) * 600)
     })
 }
-
 
 
 export const renderGraph = () => {
