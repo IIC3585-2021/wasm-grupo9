@@ -48,6 +48,8 @@ export const giveStyle = () => {
 
 // Va coloreando con verde las ciudades en orden segun el resultado
 export const showPath = (citiesPath) => {
+    citiesPath = citiesPath.map(c => {return statesDict[c - 1]})
+    console.log(citiesPath)
     citiesPath.forEach((city, index) => {
         setTimeout(() => {
             let node = g.node(city);

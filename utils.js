@@ -82,6 +82,7 @@ Module().then(function (mymod) {
     calcBtn.onclick = () => {
       let matrix = getMatrixValues();
       let nCities = $("#fib-n").val();
+      let nCitiesAux = nCities;
       createNodes(states, nCities);
       createLabels(matrix, g);
       giveStyle();
@@ -95,9 +96,10 @@ Module().then(function (mymod) {
       mymod._mincost(0, memoryMatrix, memoryPath, 0, memoryCompleted, memoryCost, nCities);
       let endDate = window.performance.now();
       let resultPath = getPath(mymod, memoryPath);
-      let testPath = ["B", "A"]; // Hay que cambiarlo por el path verdadero
       let cost = mymod.getValue(memoryCost, "i32");
-      showPath(testPath);
+      nCitiesAux++
+      let resultPath2 = resultPath.slice(0, nCitiesAux)
+      showPath(resultPath2);
       console.log(`La distancia minima es: ${'a'} Excecution time: ${(endDate - startDate)} ms ${resultPath}, ${cost}`);
     }
 })
