@@ -68,6 +68,14 @@ const getPath = (myModule, pathMemory) => {
   return resultPath;
 }
 
+const addRowTable = (nCities, time) => {
+  const table = document.getElementById("result-table");
+  let row = table.insertRow(-1);
+  let cell1 = row.insertCell(0);
+  let cell2 = row.insertCell(1);
+  cell1.innerHTML = `${nCities}`;
+  cell2.innerHTML = `${time} ms`;
+}
 
 // Ejecución de programa principal
 Module().then(function (mymod) {
@@ -91,15 +99,16 @@ Module().then(function (mymod) {
       let memoryPath = sendPath(mymod);
       let memoryCompleted = sendPath(mymod);
       let memoryCost = mymod._calloc(1, 4);
-      // // const mincost = mymod.cwrap("mincost", null, ['number', 'number', 'number', 'number']);
       let startDate = window.performance.now();
       mymod._mincost(0, memoryMatrix, memoryPath, 0, memoryCompleted, memoryCost, nCities);
       let endDate = window.performance.now();
       let resultPath = getPath(mymod, memoryPath);
       let cost = mymod.getValue(memoryCost, "i32");
-      nCitiesAux++
-      let resultPath2 = resultPath.slice(0, nCitiesAux)
+      nCitiesAux++;
+      let resultPath2 = resultPath.slice(0, nCitiesAux);
       showPath(resultPath2);
+      nCitiesAux--;
+      addRowTable(nCitiesAux, endDate - startDate);
       console.log(`La distancia minima es: ${'a'} Excecution time: ${(endDate - startDate)} ms ${resultPath}, ${cost}`);
     }
 })
